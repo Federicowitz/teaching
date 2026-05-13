@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home esercitazioni</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-soft: #eef2f7;
+      --text: #172033;
+      --muted: #667085;
+      --border: #d8dee9;
+      --primary: #1f4e79;
+      --primary-dark: #173a5a;
+      --danger: #9b1c1c;
+      --shadow: 0 14px 34px rgba(23, 32, 51, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(135deg, #132f4c, #235f92);
+      color: white;
+      padding: 46px 24px 72px 24px;
+    }
+
+    .header-content,
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 12px 0;
+      font-size: clamp(2.1rem, 5vw, 3.8rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+    }
+
+    header p {
+      max-width: 760px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 1.08rem;
+    }
+
+    main {
+      padding: 0 24px 56px 24px;
+      margin-top: -42px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .section-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid var(--primary);
+      background: var(--primary);
+      color: white;
+      border-radius: 12px;
+      padding: 11px 15px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+    }
+
+    button.secondary {
+      background: white;
+      color: var(--primary);
+    }
+
+    button.secondary:hover {
+      background: var(--surface-soft);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar,
+    .content {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(23, 32, 51, 0.05);
+    }
+
+    .sidebar h2,
+    .content h2 {
+      margin: 0 0 14px 0;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .section-link {
+      width: 100%;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      color: inherit;
+      font-size: 0.8rem;
+    }
+
+    .route-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .route-card {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      background: white;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .route-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(23, 32, 51, 0.08);
+      border-color: rgba(31, 78, 121, 0.45);
+    }
+
+    .route-title {
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .route-path {
+      color: var(--muted);
+      font-size: 0.92rem;
+      word-break: break-word;
+    }
+
+    .empty,
+    .error {
+      padding: 14px;
+      border-radius: 14px;
+      background: var(--surface-soft);
+      color: var(--muted);
+    }
+
+    .error {
+      color: var(--danger);
+      background: #fff1f1;
+      border: 1px solid #f1c3c3;
+    }
+
+    .config-note {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    code {
+      background: var(--surface-soft);
+      border-radius: 5px;
+      padding: 2px 5px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    @media (max-width: 840px) {
+      header {
+        padding-bottom: 62px;
+      }
+
+      main {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .topbar,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>Esercitazioni</h1>
+      <p>
+        Seleziona una sezione per visualizzare automaticamente le pagine HTML disponibili nel repository.
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="topbar">
+        <div>
+          <strong>Home page del corso</strong>
+          <div class="status" id="statusText">Caricamento sezioni...</div>
+        </div>
+        <button class="secondary" id="reloadButton" type="button">Ricarica</button>
+      </div>
+      <div class="section-buttons" id="quickButtons"></div>
+    </section>
+
+    <section class="content-grid">
+      <aside class="sidebar">
+        <h2>Sezioni</h2>
+        <div class="section-list" id="sectionList"></div>
+      </aside>
+
+      <section class="content">
+        <h2 id="currentSectionTitle">Seleziona una sezione</h2>
+        <div class="route-list" id="routeList">
+          <div class="empty">Scegli una sezione per vedere le pagine disponibili.</div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const sections = [
+      {
+        label: "Web",
+        path: "web"
+      },
+      {
+        label: "C++",
+        path: "C++"
+      }
+    ];
+
+    const repository = {
+      owner: "",
+      name: "",
+      branch: "main"
+    };
+
+    const statusText = document.getElementById("statusText");
+    const quickButtons = document.getElementById("quickButtons");
+    const sectionList = document.getElementById("sectionList");
+    const routeList = document.getElementById("routeList");
+    const currentSectionTitle = document.getElementById("currentSectionTitle");
+    const reloadButton = document.getElementById("reloadButton");
+
+    let sectionData = [];
+
+    const inferRepositoryFromGithubPages = () => {
+      const hostname = window.location.hostname;
+      const pathnameParts = window.location.pathname.split("/").filter(Boolean);
+
+      if (!hostname.endsWith("github.io")) {
+        return null;
+      }
+
+      const owner = hostname.replace(".github.io", "");
+      const name = pathnameParts.length > 0 ? pathnameParts[0] : `${owner}.github.io`;
+
+      return { owner, name };
+    };
+
+    const getRepository = () => {
+      if (repository.owner && repository.name) {
+        return repository;
+      }
+
+      const inferred = inferRepositoryFromGithubPages();
+      if (!inferred) {
+        return null;
+      }
+
+      return {
+        owner: inferred.owner,
+        name: inferred.name,
+        branch: repository.branch
+      };
+    };
+
+    const encodePathForApi = (path) => {
+      return path
+        .split("/")
+        .map((part) => encodeURIComponent(part))
+        .join("/");
+    };
+
+    const createElement = (tagName, className, text) => {
+      const element = document.createElement(tagName);
+      if (className) {
+        element.className = className;
+      }
+      if (text !== undefined) {
+        element.innerText = text;
+      }
+      return element;
+    };
+
+    const clearElement = (element) => {
+      while (element.firstChild) {
+        element.removeChild(element.firstChild);
+      }
+    };
+
+    const getHtmlTitle = async (path) => {
+      try {
+        const response = await fetch(encodeURI(path), { cache: "no-store" });
+        if (!response.ok) {
+          return null;
+        }
+
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        const title = doc.querySelector("title");
+
+        if (!title || !title.innerText.trim()) {
+          return null;
+        }
+
+        return title.innerText.trim();
+      } catch (error) {
+        return null;
+      }
+    };
+
+    const filenameToTitle = (filename) => {
+      return filename
+        .replace(/\.html$/i, "")
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, (letter) => letter.toUpperCase());
+    };
+
+    const loadSectionFiles = async (section) => {
+      const repo = getRepository();
+
+      if (!repo) {
+        throw new Error("Repository non rilevato. Pubblica la pagina su GitHub Pages oppure compila owner e name nella costante repository.");
+      }
+
+      const apiPath = encodePathForApi(section.path);
+      const url = `https://api.github.com/repos/${repo.owner}/${repo.name}/contents/${apiPath}?ref=${repo.branch}`;
+      const response = await fetch(url, { cache: "no-store" });
+
+      if (!response.ok) {
+        throw new Error(`Impossibile leggere la cartella ${section.path}. Verifica che esista nel repository e che il branch sia corretto.`);
+      }
+
+      const files = await response.json();
+
+      if (!Array.isArray(files)) {
+        return [];
+      }
+
+      const htmlFiles = files
+        .filter((file) => file.type === "file")
+        .filter((file) => file.name.toLowerCase().endsWith(".html"))
+        .filter((file) => file.name.toLowerCase() !== "index.html")
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      const routes = await Promise.all(
+        htmlFiles.map(async (file) => {
+          const title = await getHtmlTitle(file.path);
+          return {
+            title: title || filenameToTitle(file.name),
+            path: file.path,
+            url: encodeURI(file.path)
+          };
+        })
+      );
+
+      return routes;
+    };
+
+    const renderSections = () => {
+      clearElement(sectionList);
+      clearElement(quickButtons);
+
+      sectionData.forEach((section, index) => {
+        const sidebarButton = createElement("button", "section-link", "");
+        sidebarButton.type = "button";
+
+        const label = createElement("span", "", section.label);
+        const badge = createElement("span", "badge", String(section.routes.length));
+
+        sidebarButton.appendChild(label);
+        sidebarButton.appendChild(badge);
+        sidebarButton.onclick = () => renderRoutes(index);
+
+        const quickButton = createElement("button", "secondary", section.label);
+        quickButton.type = "button";
+        quickButton.onclick = () => renderRoutes(index);
+
+        sectionList.appendChild(sidebarButton);
+        quickButtons.appendChild(quickButton);
+      });
+    };
+
+    const renderRoutes = (sectionIndex) => {
+      const section = sectionData[sectionIndex];
+      currentSectionTitle.innerText = section.label;
+      clearElement(routeList);
+
+      if (section.error) {
+        const error = createElement("div", "error", section.error);
+        routeList.appendChild(error);
+        return;
+      }
+
+      if (section.routes.length === 0) {
+        const empty = createElement("div", "empty", `Nessun file HTML trovato nella cartella ${section.path}.`);
+        routeList.appendChild(empty);
+        return;
+      }
+
+      section.routes.forEach((route) => {
+        const link = document.createElement("a");
+        link.className = "route-card";
+        link.href = route.url;
+
+        const title = createElement("div", "route-title", route.title);
+        const path = createElement("div", "route-path", route.path);
+
+        link.appendChild(title);
+        link.appendChild(path);
+        routeList.appendChild(link);
+      });
+    };
+
+    const loadAllSections = async () => {
+      statusText.innerText = "Caricamento sezioni...";
+      currentSectionTitle.innerText = "Seleziona una sezione";
+      clearElement(routeList);
+      routeList.appendChild(createElement("div", "empty", "Caricamento in corso..."));
+
+      const loaded = [];
+
+      for (const section of sections) {
+        try {
+          const routes = await loadSectionFiles(section);
+          loaded.push({
+            ...section,
+            routes,
+            error: null
+          });
+        } catch (error) {
+          loaded.push({
+            ...section,
+            routes: [],
+            error: error.message
+          });
+        }
+      }
+
+      sectionData = loaded;
+      renderSections();
+
+      const totalRoutes = sectionData.reduce((total, section) => total + section.routes.length, 0);
+      statusText.innerText = `Sezioni caricate: ${sectionData.length}. Pagine trovate: ${totalRoutes}.`;
+
+      if (sectionData.length > 0) {
+        renderRoutes(0);
+      }
+    };
+
+    reloadButton.onclick = loadAllSections;
+
+    loadAllSections();
+  </script>
+</body>
+</html>
