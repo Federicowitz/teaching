@@ -397,15 +397,15 @@ const SLIDES = [
     `,
     custom: `
       <div class="bitrow-wrap" style="margin-top:26px;">
-        <div class="bitrow"><div class="rlabel mono">1010</div><div class="bits">
-          <div class="bit">1</div><div class="bit">0</div><div class="bit">1</div><div class="bit">0</div>
-        </div><div class="rsuffix">10</div></div>
+        <div class="bitrow"><div class="rlabel mono">0111</div><div class="bits">
+          <div class="bit">0</div><div class="bit">1</div><div class="bit">1</div><div class="bit">1</div>
+        </div><div class="rsuffix">7</div></div>
         <div class="bitrow"><div class="rlabel mono">+ 0101</div><div class="bits">
           <div class="bit">0</div><div class="bit">1</div><div class="bit">0</div><div class="bit">1</div>
         </div><div class="rsuffix">5</div></div>
-        <div class="bitrow result divider"><div class="rlabel mono">= 1111</div><div class="bits">
+        <div class="bitrow result divider"><div class="rlabel mono">= 1110</div><div class="bits">
           <div class="bit flag-good">1</div><div class="bit flag-good">1</div><div class="bit flag-good">1</div><div class="bit flag-good">1</div>
-        </div><div class="rsuffix">15 &mdash; nessun riporto a catena</div></div>
+        </div><div class="rsuffix">12</div></div>
       </div>
     `
   },
@@ -418,7 +418,7 @@ const SLIDES = [
       <p>Nella sottrazione il prestito si propaga all'indietro attraverso pi&ugrave; bit, in modo diverso dal riporto della somma.</p>
       <p>Per l'hardware servirebbe un <strong>secondo circuito</strong>, completamente diverso da quello della somma: pi&ugrave; spazio sul chip, pi&ugrave; energia, pi&ugrave; costo.</p>
     `,
-    callout: `Domanda guida: in matematica, come si trasforma <b>7 &minus; 5</b> in un'addizione? Se il computer sapesse rappresentare i numeri negativi, basterebbe un solo circuito.`
+    callout: `Domanda: in matematica, come si trasforma <b>7 &minus; 5</b> in un'addizione? Se il computer sapesse rappresentare i numeri negativi, basterebbe un solo circuito.`
   },
 
   // ---------- FASE 4a ----------
@@ -433,7 +433,7 @@ const SLIDES = [
         <div class="task-label">Consegna &mdash; 5 minuti</div>
         <ol>
           <li>Proporre un modo per rappresentare il segno di un numero usando solo bit.</li>
-          <li>Scrivere +5 e &minus;5 a 8 bit secondo la proposta.</li>
+          <li>Scrivere +5 e &minus;5 usando 8 bit secondo la proposta.</li>
           <li>Sommare bit a bit le due rappresentazioni: cosa dovrebbe risultare? Cosa risulta davvero?</li>
         </ol>
       </div>
@@ -445,7 +445,7 @@ const SLIDES = [
     phase: 4, phaseLabel: "Fase 4 &middot; Modulo e Segno", addr: "100b", time: "15 min",
     title: "La proposta pi&ugrave; naturale",
     body: `
-      <p>Dalla restituzione dei gruppi emerge tipicamente l'idea pi&ugrave; intuitiva: il primo bit indica il segno, 0 per il pi&ugrave;, 1 per il meno.</p>
+      <p> Il primo bit indica il segno, 0 per il pi&ugrave;, 1 per il meno.</p>
       <p>Questa codifica si chiama <strong>Modulo e Segno</strong>.</p>
     `,
     custom: `
@@ -466,10 +466,10 @@ const SLIDES = [
     phase: 4, phaseLabel: "Fase 4 &middot; I limiti", addr: "100c", time: "15 min",
     title: "Perch&eacute; Modulo e Segno non basta",
     body: `
-      <p>Sommando bit a bit +5 e &minus;5 come farebbe un circuito meccanico, il risultato non &egrave; zero: il circuito non sa che il primo bit &egrave; speciale.</p>
+      <p>Sommando bit a bit +5 e &minus;5 come farebbe un circuito meccanico, il risultato non &egrave; zero: il circuito non sa che il primo bit &egrave; speciale. <href>https://it.wikipedia.org/wiki/Rappresentazione_in_segno_e_modulo</href></p>
       <p>Secondo problema: lo zero ha <strong>due rappresentazioni</strong>, 00000000 e 10000000 &mdash; uno spreco di una configurazione su 256.</p>
     `,
-    callout: `L'idea era giusta nello spirito &mdash; dedicare un'informazione al segno &mdash; ma sbagliata nell'esecuzione. Serve un metodo che funzioni con la somma binaria <b>senza eccezioni</b>.`
+    callout: `L'idea di dedicare un bit per il segno e' corretta MA serve un metodo che funzioni con la somma binaria <b>senza dover gestire tutte le eccezioni</b>.`
   },
 
   // ---------- FASE 5a ----------
@@ -517,7 +517,7 @@ const SLIDES = [
         </div><div class="rsuffix">= 2, in 8 bit</div></div>
       </div>
     `,
-    callout: `Verifica formativa rapida: calcolare il complemento a 2 di +3 e dimostrare che sommato a +3 d&agrave; zero.`
+    callout: `[approfondimento] Il bit 1 più a sinistra è il carry out (riporto in uscita). Nel complemento a due viene ignorato. Da non confondere con l'overflow: ossia il risultato per i numeri con segno esce dall'intervallo rappresentabile (esempio sommando due numeri positivi e ottenendo un risultato negativo) guarda prossima slide`
   },
 
   // ---------- FASE 5c ----------
@@ -545,14 +545,15 @@ const SLIDES = [
     phase: 6, phaseLabel: "Fase 6 &middot; Sintesi", addr: "110", time: "9 min",
     title: "Dal problema hardware alla soluzione",
     body: `
-      <p>Il percorso: la sottrazione costa cara da costruire in silicio &#8594; tentativo di trasformarla in addizione &#8594; Modulo e Segno, proposto dai gruppi, fallisce sull'addizione e sullo zero doppio &#8594; il <strong>Complemento a 2</strong> risolve entrambi i problemi.</p>
+      <p>Il percorso: la sottrazione costa cara da costruire in silicio &#8594; tentativo di trasformarla in addizione &#8594;  Con Modulo e Segno bisogna gestire tutti i casi e ha il problema del doppio zero &#8594; il <strong>Complemento a 2</strong> risolve entrambi i problemi.</p>
     `,
     custom: `
       <div class="task-box">
         <div class="task-label">Exit ticket individuale</div>
         <ol>
-          <li>Calcolare il complemento a 2 di +3 a 8 bit.</li>
+          <li>Calcolare il complemento a 2 di -3 a 8 bit.</li>
           <li>Sommarlo a +3 e dimostrare che il risultato &egrave; zero.</li>
+          <li>(avanzato) Provare a sommare +100 e +50, che numero esce fuori? perchè?</li> 
         </ol>
       </div>
     `,
